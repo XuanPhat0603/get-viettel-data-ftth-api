@@ -1,0 +1,26 @@
+{
+  "name": "viettel-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XuanPhat0603/get-viettel-data-ftth-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XuanPhat0603/get-viettel-data-ftth-api/issues"
+  },
+  "homepage": "https://github.com/XuanPhat0603/get-viettel-data-ftth-api#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
