@@ -1,0 +1,58 @@
+{{!--  create button get dashbaord --}}
+<div class="flex justify-center">
+    <form action="/dashboard">
+        <button type="submit" formmethod="post" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        GET
+        </button>
+    </form>
+</div>
+
+
+    <div class="container flex justify-center mx-auto">
+        <div class="flex flex-col">
+            <div class="w-full">
+                <div class="border-b border-gray-200 shadow">
+                    <table>
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                    Ngày
+                                </th>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                    Upload
+                                </th>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                    Download
+                                </th>
+                                <th class="px-6 py-2 text-xs text-gray-500">
+                                    Tổng data
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            {{#each data}}
+                            <tr class="whitespace-nowrap">
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{this.date}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">
+                                        {{this.upload}}  
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">
+                                        {{this.download}}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{this.totalUse}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
