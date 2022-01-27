@@ -62,42 +62,40 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-   // if (req.session.token) {
+    if (req.session.token) {
         res.render('dashboard.hbs');
-    //} else {
-    //   res.redirect('/');
-    //}
+    } else {
+       res.redirect('/');
+    }
 });
 
 app.post('/dashboard', async (req, res) => {
-    res.render('dashboard.hbs');
-    // if (req.session.token) {
-    //     const token = req.session.token;
-    //     const url = "https://viettel.vn/api/get-adsl-genenal-traffic";
+    if (req.session.token) {
+        const token = req.session.token;
+        const url = "https://viettel.vn/api/get-adsl-genenal-traffic";
 
-    //     const data = {
-    //         token: token,
-    //         month: 1,
-    //         year: 2022,
-    //     }
-    //     const options = {
-    //         method: 'POST',
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     }
-    //     const response = await fetch(url, options);
-    //     const json = await response.json();
-    //     res.render('dashboard.hbs', {
-    //         data: json.data.trafficMonths,
-    //         totalDownload: json.data.sumDownload,
-    //         totalUpload: json.data.sumUpload,
-    //     });
-    // } else {
-    //     res.render('index.hbs');
-    // }});
-});
+        const data = {
+            token: token,
+            month: 1,
+            year: 2022,
+        }
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const response = await fetch(url, options);
+        const json = await response.json();
+        res.render('dashboard.hbs', {
+            data: json.data.trafficMonths,
+            totalDownload: json.data.sumDownload,
+            totalUpload: json.data.sumUpload,
+        });
+    } else {
+        res.render('index.hbs');
+    }});
 
 app.listen(port, () => {
     console.log("Server is running on port " + port);
