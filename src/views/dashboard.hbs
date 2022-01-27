@@ -1,5 +1,5 @@
 {{!--  create button get dashbaord --}}
-<div class="flex justify-center">
+<div class="flex justify-center ">
     <form action="/dashboard">
         <button type="submit" formmethod="post" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         GET
@@ -7,52 +7,143 @@
     </form>
 </div>
 
+<div class="flex justify-center p-2 m-2">
+  <div class="mb-3 xl:w-96">
+    <select class="form-select appearance-none
+      block
+      w-full
+      px-3
+      py-1.5
+      text-base
+      font-normal
+      text-gray-700
+      bg-white bg-clip-padding bg-no-repeat
+      border border-solid border-gray-300
+      rounded
+      transition
+      ease-in-out
+      m-0
+      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
+        <option selected>Chọn tháng</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
+  </div>
+    <div class="mb-3 xl:w-96">
+    <select class="form-select appearance-none
+      block
+      w-full
+      px-3
+      py-1.5
+      text-base
+      font-normal
+      text-gray-700
+      bg-white bg-clip-padding bg-no-repeat
+      border border-solid border-gray-300
+      rounded
+      transition
+      ease-in-out
+      m-0
+      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
+        <option selected>Chọn năm</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+    </select>
+  </div>
+</div>
 
-    <div class="container flex justify-center mx-auto">
-        <div class="flex flex-col">
-            <div class="w-full">
-                <div class="border-b border-gray-200 shadow">
-                    <table>
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Ngày
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Upload
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Download
-                                </th>
-                                <th class="px-6 py-2 text-xs text-gray-500">
-                                    Tổng data
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white">
-                            {{#each data}}
-                            <tr class="whitespace-nowrap">
-                                <td class="px-6 py-4 text-sm text-gray-500">
-                                    {{this.date}}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-900">
-                                        {{this.upload}}  
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-900">
-                                        {{this.download}}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">
-                                    {{this.totalUse}}
-                                </td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
+<div class="shadow-lg rounded-lg overflow-hidden">
+  <div class="py-3 px-5 bg-gray-50">Doughnut chart</div>
+  <canvas class="p-10" id="chartDoughnut"></canvas>
+</div>
+
+<!-- Required chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart doughnut -->
+<script>
+  const dataDoughnut = {
+    labels: ["Total Upload", "Total Download"],
+    datasets: [
+      {
+        label: "Data",
+        data: [{{ totalDownload }}, {{ totalUpload }}],
+        backgroundColor: [
+          "rgb(133, 105, 241)",
+          "rgb(164, 101, 241)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  };
+
+  const configDoughnut = {
+    type: "doughnut",
+    data: dataDoughnut,
+    options: {},
+  };
+
+  var chartBar = new Chart(
+    document.getElementById("chartDoughnut"),
+    configDoughnut
+  );
+</script>
+<div class="container flex justify-center mx-auto">
+    <div class="flex flex-col">
+        <div class="w-full">
+            <div class="border-b border-gray-200 shadow">
+                <table>
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-2 text-xs text-gray-500">
+                                Ngày
+                            </th>
+                            <th class="px-6 py-2 text-xs text-gray-500">
+                                Upload
+                            </th>
+                            <th class="px-6 py-2 text-xs text-gray-500">
+                                Download
+                            </th>
+                            <th class="px-6 py-2 text-xs text-gray-500">
+                                Tổng data
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {{#each data}}
+                        <tr class="whitespace-nowrap">
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                {{this.date}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    {{this.upload}}  
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    {{this.download}}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                {{this.totalUse}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
+
