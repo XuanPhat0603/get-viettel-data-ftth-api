@@ -88,14 +88,28 @@ app.post('/dashboard', async (req, res) => {
         }
         const response = await fetch(url, options);
         const json = await response.json();
+        // divide by 1024 to get GB
+        const data_traffic = json.data.trafficMonths.map(item => {
+            return {
+                date: item.date,
+                upload: Number.parseFloat(item.upload / 1073741824).toFixed(2),
+                download: Number.parseFloat(item.download / 1073741824).toFixed(2),
+                totalUse: Number.parseFloat(item.totalUse / 1073741824).toFixed(2)
+            }
+        });
+
         res.render('dashboard.hbs', {
-            data: json.data.trafficMonths,
+            data: data_traffic,
             totalDownload: json.data.sumDownload,
             totalUpload: json.data.sumUpload,
         });
     } else {
         res.render('index.hbs');
-    }});
+}});
+
+app.get('/xx', (req, res) => {
+    res.render('dashboard.hbs');
+});
 
 app.listen(port, () => {
     console.log("Server is running on port " + port);
