@@ -4,7 +4,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fetch from 'node-fetch';
-import morgan from 'morgan';
+//import morgan from 'morgan';
 import session from 'express-session';
 import favicon from 'serve-favicon';
 
@@ -21,7 +21,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public/images', 'logo.ico')));
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
