@@ -4,6 +4,6 @@
 
 # How to run ?
 
-## npm run i
+- npm  i
 
-## npm start
+- npm start
