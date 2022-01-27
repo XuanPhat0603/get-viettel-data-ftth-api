@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = 3005 || process.env.PORT;
+const port = process.env.PORT ||3000;
 
 app.engine('hbs', engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
