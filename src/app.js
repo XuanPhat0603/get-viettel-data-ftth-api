@@ -107,6 +107,8 @@ app.post('/dashboard', async (req, res) => {
 
             // response to client ajax
             res.json(data_traffic);
+        } else {
+            res.json(json.message);
         }
 
     } else {
