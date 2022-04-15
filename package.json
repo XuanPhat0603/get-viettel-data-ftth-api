@@ -6,9 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "build": "netlify-lambda build express",
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
