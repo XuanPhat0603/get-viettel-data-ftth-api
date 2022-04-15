@@ -44,7 +44,6 @@ app.post('/login', async (req, res) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
         },
         body: JSON.stringify({
             account: username,
@@ -57,17 +56,16 @@ app.post('/login', async (req, res) => {
         req.session.token = data.data.data.token;
         res.redirect('/dashboard');
     } else {
-        res.json(data.message);
+        return res.redirect('/');
     }
 });
 
 app.get('/dashboard', (req, res) => {
     res.render('dashboard.hbs');
     if (req.session.token) {
-        res.render('dashboard.hbs');
-    } else {
-        res.redirect('/');
+        return res.render('dashboard.hbs');
     }
+    res.redirect('/');
 });
 
 app.post('/dashboard', async (req, res) => {
@@ -104,15 +102,10 @@ app.post('/dashboard', async (req, res) => {
                     totalUse: Number.parseFloat(item.totalUse / 1073741824).toFixed(2)
                 }
             });
-
-            // response to client ajax
-            res.json(data_traffic);
-        } else {
-            res.json(json.message);
+            return res.json(data_traffic);
         }
-
     } else {
-        res.render('index.hbs');
+        res.redirect('/');
     }
 });
 
