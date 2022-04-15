@@ -1,150 +1,96 @@
-<div class="m-2"> 
-<div class="flex justify-center ">
-    <form action="/dashboard">
-        <button type="submit" formmethod="post" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        GET
-        </button>
-    </form>
-</div>
-<div class="m-2 p-2">
-<div class="flex justify-center p-2">
-  <div class="mb-3 xl:w-96">
-    <select class="form-select appearance-none
-      block
-      w-full
-      px-3
-      py-1.5
-      text-base
-      font-normal
-      text-gray-700
-      bg-white bg-clip-padding bg-no-repeat
-      border border-solid border-gray-300
-      rounded
-      transition
-      ease-in-out
-      m-0
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
-        <option selected>Chọn tháng</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-    </select>
-  </div>
-    <div class="mb-3 xl:w-96">
-    <select class="form-select appearance-none
-      block
-      w-full
-      px-3
-      py-1.5
-      text-base
-      font-normal
-      text-gray-700
-      bg-white bg-clip-padding bg-no-repeat
-      border border-solid border-gray-300
-      rounded
-      transition
-      ease-in-out
-      m-0
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
-        <option selected>Chọn năm</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-    </select>
-  </div>
-</div>
-</div>
-<div class="shadow-lg rounded-lg overflow-hidden p-100">
-  <div class="py-3 px-5 bg-gray-50">Total Use</div>
-  <canvas class="p-100" id="chartDoughnut"></canvas>
-</div>
-
-<!-- Required chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Chart doughnut -->
-<script>
-  const dataDoughnut = {
-    labels: ["Total Upload", "Total Download"],
-    datasets: [
-      {
-        label: "Data",
-        data: [{{ totalDownload }} / 1073741824, {{ totalUpload }} / 1073741824],
-        backgroundColor: [
-          "rgb(133, 105, 241)",
-          "rgb(164, 101, 241)",
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  };
-
-  const configDoughnut = {
-    type: "doughnut",
-    data: dataDoughnut,
-    options: {},
-  };
-
-  var chartBar = new Chart(
-    document.getElementById("chartDoughnut"),
-    configDoughnut
-  );
-</script>
-<div class="container flex justify-center mx-auto">
-    <div class="flex flex-col">
-        <div class="w-full">
-            <div class="border-b border-gray-200 shadow">
-                <table>
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-2 text-xs text-gray-500">
-                                Ngày
-                            </th>
-                            <th class="px-6 py-2 text-xs text-gray-500">
-                                Upload
-                            </th>
-                            <th class="px-6 py-2 text-xs text-gray-500">
-                                Download
-                            </th>
-                            <th class="px-6 py-2 text-xs text-gray-500">
-                                Tổng data
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        {{#each data}}
-                        <tr class="whitespace-nowrap">
-                            <td class="px-6 py-4 text-sm text-gray-500">
-                                {{this.date}}
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                    {{this.upload}}  
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                    {{this.download}}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-500">
-                                {{this.totalUse}}
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="grid grid-cols-1 gap-4 mx-auto px-5 py-4">
+  <div class="flex mx-auto">
+    <div class="relative">
+      <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </div>
+      <input datepicker="" datepicker-buttons="" type="text" id="datepicker-input"
+        class="bg-gray-50 border border-gray-300 text-slate-100 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-red-500 dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+        placeholder="Select date">
     </div>
+    <form onsubmit="onGetData(event)">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded mx-3">
+        GET DATA
+      </button>
+    </form>
+  </div>
+  <div class="shadow-lg rounded-lg overflow-hidden p-100">
+    <div class="flex justify-center py-3 px-5">
+      <div class="container flex justify-center mx-auto">
+        <div class="flex flex-col">
+          <div class="w-full">
+            <div class="border-b border-gray-200 shadow">
+              <table>
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-2 text-lg text-gray-500">
+                      Ngày
+                    </th>
+                    <th class="px-6 py-2 text-lg text-gray-500">
+                      Upload
+                    </th>
+                    <th class="px-6 py-2 text-lg text-gray-500">
+                      Download
+                    </th>
+                    <th class="px-6 py-2 text-lg text-gray-500">
+                      Tổng data
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-
+<script>
+  function onGetData(event) {
+    event.preventDefault();
+    const datepicker = document.querySelector('#datepicker-input');
+    const date = datepicker.value;
+    $.ajax({
+      url: '/dashboard',
+      type: 'POST',
+      data: {
+        date: date
+      },
+      success: function (data) {
+        const dataTable = document.querySelector('tbody');
+        while (dataTable.firstChild) {
+          dataTable.removeChild(dataTable.firstChild);
+        }
+        dataTable.innerHTML = '';
+        data.forEach(element => {
+          let row = document.createElement('tr');
+          row.classList.add('whitespace-nowrap');
+          let date = document.createElement('td');
+          date.classList.add('px-6', 'py-4', 'text-base', 'text-gray-500');
+          let upload = document.createElement('td');
+          upload.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
+          let download = document.createElement('td');
+          download.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
+          let totalUse = document.createElement('td');
+          totalUse.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
+          date.innerHTML = element.date;
+          upload.innerHTML = element.upload + ' GB';
+          download.innerHTML = element.download + ' GB';
+          totalUse.innerHTML = element.totalUse + ' GB';
+          row.appendChild(date);
+          row.appendChild(upload);
+          row.appendChild(download);
+          row.appendChild(totalUse);
+          dataTable.appendChild(row);
+        });
+      }
+    });
+  }
+</script>

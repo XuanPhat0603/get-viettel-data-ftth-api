@@ -4,7 +4,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fetch from 'node-fetch';
-//import morgan from 'morgan';
+import morgan from 'morgan';
 import session from 'express-session';
 import favicon from 'serve-favicon';
 
@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = process.env.PORT ||3000;
+const port = process.env.PORT || 3000;
 
 app.engine('hbs', engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
@@ -20,14 +20,14 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public/images', 'logo.ico')));
-//app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
     secret: 'keyboard cat',
-    cookie: { 
+    cookie: {
         maxAge: 24 * 60 * 60 * 1000
-     },
+    },
     resave: true,
     saveUninitialized: true,
 }));
@@ -62,10 +62,11 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
+    res.render('dashboard.hbs');
     if (req.session.token) {
         res.render('dashboard.hbs');
     } else {
-       res.redirect('/');
+        res.redirect('/');
     }
 });
 
@@ -73,11 +74,16 @@ app.post('/dashboard', async (req, res) => {
     if (req.session.token) {
         const token = req.session.token;
         const url = "https://viettel.vn/api/get-adsl-genenal-traffic";
-
+        const date = req.body.date;
+        let month = date.split('/')[0];
+        if (month.length === 2) {
+            month = month.substring(1);
+        }
+        const year = date.split('/')[2];
         const data = {
             token: token,
-            month: 1,
-            year: 2022,
+            month: month,
+            year: year,
         }
         const options = {
             method: 'POST',
@@ -89,26 +95,23 @@ app.post('/dashboard', async (req, res) => {
         const response = await fetch(url, options);
         const json = await response.json();
         // divide by 1024 to get GB
-        const data_traffic = json.data.trafficMonths.map(item => {
-            return {
-                date: item.date,
-                upload: Number.parseFloat(item.upload / 1073741824).toFixed(2),
-                download: Number.parseFloat(item.download / 1073741824).toFixed(2),
-                totalUse: Number.parseFloat(item.totalUse / 1073741824).toFixed(2)
-            }
-        });
+        if (json.errorCode === '0') {
+            const data_traffic = json.data.trafficMonths.map(item => {
+                return {
+                    date: item.date,
+                    upload: Number.parseFloat(item.upload / 1073741824).toFixed(2),
+                    download: Number.parseFloat(item.download / 1073741824).toFixed(2),
+                    totalUse: Number.parseFloat(item.totalUse / 1073741824).toFixed(2)
+                }
+            });
 
-        res.render('dashboard.hbs', {
-            data: data_traffic,
-            totalDownload: json.data.sumDownload,
-            totalUpload: json.data.sumUpload,
-        });
+            // response to client ajax
+            res.json(data_traffic);
+        }
+
     } else {
         res.render('index.hbs');
-}});
-
-app.get('/xx', (req, res) => {
-    res.render('dashboard.hbs');
+    }
 });
 
 app.listen(port, () => {
