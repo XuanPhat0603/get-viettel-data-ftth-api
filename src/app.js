@@ -33,7 +33,11 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-    res.render('index.hbs');
+    // ERR_HTTP_HEADERS_SENT
+    res.render('index', {
+        title: 'Home',
+        user: req.session.user
+    });
 });
 
 app.post('/login', async (req, res) => {
@@ -56,16 +60,15 @@ app.post('/login', async (req, res) => {
         req.session.token = data.data.data.token;
         res.redirect('/dashboard');
     } else {
-        return res.redirect('/');
+        res.redirect('/');
     }
 });
 
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard.hbs');
-    if (req.session.token) {
-        return res.render('dashboard.hbs');
-    }
-    res.redirect('/');
+    if (req.session.token)
+        res.render('dashboard.hbs');
+    else
+        res.redirect('/');
 });
 
 app.post('/dashboard', async (req, res) => {
@@ -102,7 +105,7 @@ app.post('/dashboard', async (req, res) => {
                     totalUse: Number.parseFloat(item.totalUse / 1073741824).toFixed(2)
                 }
             });
-            return res.json(data_traffic);
+            res.json(data_traffic);
         }
     } else {
         res.redirect('/');
