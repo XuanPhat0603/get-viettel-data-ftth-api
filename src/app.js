@@ -34,7 +34,7 @@ app.use(session({
 
 app.get('/', (req, res) => {
     // ERR_HTTP_HEADERS_SENT
-    res.render('index', {
+    res.render('login', {
         title: 'Home',
         user: req.session.user
     });
@@ -110,6 +110,10 @@ app.post('/dashboard', async (req, res) => {
     } else {
         res.redirect('/');
     }
+});
+
+app.get("/xxx", (req, res) => {
+    res.render('dashboard.hbs');
 });
 
 app.listen(port, () => {
