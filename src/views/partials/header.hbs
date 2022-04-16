@@ -24,13 +24,8 @@
                     <img class="block lg:hidden h-8 w-auto" src="/images/viettel.jpg" alt="Viettel Logo">
                     <img class="hidden lg:block h-8 w-auto" src="/images/viettel.jpg" alt="Viettel Logo">
                 </div>
-                <div class="hidden sm:block sm:ml-6">
-                    <div class="flex space-x-4">
-                        <a href="/dashboard" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                            aria-current="page">Dashboard</a>
-                    </div>
-                </div>
             </div>
+            {{#if user}}
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div class="text-white">
                     {{ session.username }}
@@ -58,6 +53,7 @@
                     </div>
                 </div>
             </div>
+            {{/if}}
         </div>
     </div>
 
