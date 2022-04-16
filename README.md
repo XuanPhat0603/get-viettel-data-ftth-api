@@ -1,8 +1,6 @@
-[Demo](https://viettel-get-data.herokuapp.com/)
+# [Link Demo](https://viettel-get-data.herokuapp.com/)
 
-# Function
-
-## Get daily data viettel fiber optic cable
+# Function: Get daily data viettel fiber optic cable
 
 # How to run ?
 
