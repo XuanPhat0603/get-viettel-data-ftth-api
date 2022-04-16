@@ -66,7 +66,12 @@ app.post('/login', async (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     if (req.session.token)
-        res.render('dashboard.hbs');
+        res.render('dashboard.hbs',
+            {
+                title: 'Dashboard',
+                user: true
+            }
+        );
     else
         res.redirect('/');
 });
@@ -112,8 +117,9 @@ app.post('/dashboard', async (req, res) => {
     }
 });
 
-app.get("/xxx", (req, res) => {
-    res.render('dashboard.hbs');
+app.get("/signout", (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 app.listen(port, () => {
