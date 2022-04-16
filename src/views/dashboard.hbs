@@ -1,3 +1,5 @@
+{{> toast}}
+<div id="toast-container"></div>
 <div class="grid grid-cols-1 gap-4 mx-auto px-10 py-10">
   <div class="flex mx-auto">
     <div class="relative">
@@ -10,7 +12,7 @@
         </svg>
       </div>
       <input datepicker="" datepicker-buttons="" type="text" id="datepicker-input"
-        class="bg-gray-50 border border-gray-300 text-slate-100 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-red-500 dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+        class="bg-gray-50 border border-gray-300 text-slate-100 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
         placeholder="Select date">
     </div>
     <form onsubmit="onGetData(event)">
@@ -78,35 +80,84 @@
         date: date
       },
       success: function (data) {
-        // remove loading icon
-        document.getElementById('loading').innerHTML = '';
-        const dataTable = document.querySelector('tbody');
-        while (dataTable.firstChild) {
-          dataTable.removeChild(dataTable.firstChild);
+        console.log(data);
+        if (data.success) {
+          // remove loading icon
+          document.getElementById('loading').innerHTML = '';
+          const dataTable = document.querySelector('tbody');
+          while (dataTable.firstChild) {
+            dataTable.removeChild(dataTable.firstChild);
+          }
+          dataTable.innerHTML = '';
+          data.data.forEach(element => {
+            let row = document.createElement('tr');
+            row.classList.add('whitespace-nowrap');
+            let date = document.createElement('td');
+            date.classList.add('px-6', 'py-4', 'text-base', 'text-gray-500');
+            let upload = document.createElement('td');
+            upload.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
+            let download = document.createElement('td');
+            download.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
+            let totalUse = document.createElement('td');
+            totalUse.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
+            date.innerHTML = element.date;
+            upload.innerHTML = element.upload + ' GB';
+            download.innerHTML = element.download + ' GB';
+            totalUse.innerHTML = element.totalUse + ' GB';
+            row.appendChild(date);
+            row.appendChild(download);
+            row.appendChild(upload);
+            row.appendChild(totalUse);
+            dataTable.appendChild(row);
+          });
+        } else {
+          // remove loading icon
+          document.getElementById('loading').innerHTML = '';
+
+          const template = Handlebars.compile($('#toast-error').html());
+          const html = template({
+            message: data.message
+          });
+          $('#toast-container').append(html);
         }
-        dataTable.innerHTML = '';
-        data.forEach(element => {
-          let row = document.createElement('tr');
-          row.classList.add('whitespace-nowrap');
-          let date = document.createElement('td');
-          date.classList.add('px-6', 'py-4', 'text-base', 'text-gray-500');
-          let upload = document.createElement('td');
-          upload.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
-          let download = document.createElement('td');
-          download.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
-          let totalUse = document.createElement('td');
-          totalUse.classList.add('px-6', 'py-4', 'text-base', 'text-gray-900');
-          date.innerHTML = element.date;
-          upload.innerHTML = element.upload + ' GB';
-          download.innerHTML = element.download + ' GB';
-          totalUse.innerHTML = element.totalUse + ' GB';
-          row.appendChild(date);
-          row.appendChild(download);
-          row.appendChild(upload);
-          row.appendChild(totalUse);
-          dataTable.appendChild(row);
-        });
       }
     });
   }
 </script>
+
+<script id="toast-error" type="text/x-handlebar">
+  <div class="toast flex items-center justify-between max-w-xs p-4 bg-white border rounded-md shadow-sm fixed top-20 right-5">
+    <div class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          clip-rule="evenodd" />
+      </svg>
+      <p class="ml-3 text-sm font-bold text-red-600">\{{ message }}</p>
+    </div>
+  </div>
+</script>
+
+<style>
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(calc(-100% + 5px));
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+    }
+  }
+
+  .toast {
+    animation: slideInLeft ease .3s, fadeOut linear 1s 3s forwards;
+  }
+</style>

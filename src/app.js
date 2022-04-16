@@ -32,6 +32,11 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
+
 app.get('/', (req, res) => {
     // ERR_HTTP_HEADERS_SENT
     res.render('login', {
@@ -58,6 +63,7 @@ app.post('/login', async (req, res) => {
     const data = await response.json();
     if (data.errorCode === '0') {
         req.session.token = data.data.data.token;
+        req.session.username = data.data.data.fullName;
         res.redirect('/dashboard');
     } else {
         res.redirect('/');
@@ -66,12 +72,12 @@ app.post('/login', async (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     if (req.session.token)
-        res.render('dashboard.hbs',
-            {
-                title: 'Dashboard',
-                user: true
-            }
-        );
+        res.render('dashboard.hbs', {
+            success: true,
+            title: 'Dashboard',
+            user: true,
+            message: 'Đăng nhập thành công'
+        });
     else
         res.redirect('/');
 });
@@ -110,7 +116,15 @@ app.post('/dashboard', async (req, res) => {
                     totalUse: Number.parseFloat(item.totalUse / 1073741824).toFixed(2)
                 }
             });
-            res.json(data_traffic);
+            res.json({
+                success: true,
+                data: data_traffic
+            });
+        } else {
+            res.json({
+                success: false,
+                message: json.message
+            });
         }
     } else {
         res.redirect('/');
@@ -119,7 +133,12 @@ app.post('/dashboard', async (req, res) => {
 
 app.get("/signout", (req, res) => {
     req.session.destroy();
-    res.redirect('/');
+    res.render('login', {
+        title: 'Home',
+        user: false,
+        message: 'Đăng xuất thành công',
+        success: false
+    });
 });
 
 app.listen(port, () => {

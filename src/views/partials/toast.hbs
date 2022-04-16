@@ -1,0 +1,49 @@
+{{#if success}}
+<div
+    class="toast flex items-center justify-between max-w-xs p-4 bg-white border rounded-md shadow-sm fixed top-20 right-5">
+    <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+        </svg>
+        <p class="ml-3 text-sm font-bold text-green-600">{{ message }}</p>
+    </div>
+</div>
+{{else}}
+<div
+    class="toast flex items-center justify-between max-w-xs p-4 bg-white border rounded-md shadow-sm fixed top-20 right-5">
+    <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd" />
+        </svg>
+        <p class="ml-3 text-sm font-bold text-red-600"> {{ message }}</p>
+    </div>
+</div>
+{{/if}}
+
+<style>
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(calc(-100% + 5px));
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+        }
+    }
+
+    .toast {
+        animation: slideInLeft ease .3s, fadeOut linear 1s 3s forwards;
+    }
+</style>
