@@ -73,6 +73,9 @@
 
     const datepicker = document.querySelector('#datepicker-input');
     const date = datepicker.value;
+    if (date === '') {
+      return;
+    }
     $.ajax({
       url: '/dashboard',
       type: 'POST',
